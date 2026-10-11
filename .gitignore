@@ -1,0 +1,11 @@
+node_modules/
+.next/
+.vercel/
+.env*
+*.tsbuildinfo
+.admin-access.txt
+next-env.d.ts
+
+.vercel
+.env*
+!.env.example

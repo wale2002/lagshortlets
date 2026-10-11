@@ -1,0 +1,8 @@
+.git/
+.next/
+node_modules/
+.env*
+.admin-access.txt
+tests/
+*.tsbuildinfo
+README.md
