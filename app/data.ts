@@ -1,13 +1,14 @@
+export type Purpose = 'Shortlet'|'Sale'|'Annual rental';
 export type Stay = {
   id:string; slug:string; title:string; zone:string; area:string; type:string;
   beds:number; baths:number; guests:number; nightly:number|null; monthly:number|null;
   images:string[]; amenities:string[]; collections:string[]; description:string;
-  rules:string[]; minimumNights:number; publishedAt:string; availability:string; demo:boolean; enquiryOnly?:boolean;
+  rules:string[]; minimumNights:number; publishedAt:string; availability:string; demo:boolean; enquiryOnly?:boolean; purpose?:Purpose; plotSizes?:number[];
 };
 export const zones = [
   {id:'island-core',name:'Island Core',number:'01',areas:['Victoria Island','Ikoyi','Oniru'],caption:'City energy. A waterfront outlook.',description:'For a stay centred around Victoria Island, Ikoyi, or Oniru. Explore spaces for work trips, city weekends, and time by the water.',image:'atlantic',tags:'EXECUTIVE · WATERFRONT · CENTRAL'},
-  {id:'lekki-corridor',name:'Lekki Corridor',number:'02',areas:['Lekki Phase 1','Ikate','Chevron','Ajah','Lekki'],caption:'More room to make yourself at home.',description:'Discover Lekki Phase 1, Ikate, Chevron, and Ajah. Compare family spaces, relaxed weekend homes, and longer-stay options.',image:'pool',tags:'LIFESTYLE · FAMILY · WEEKEND'},
-  {id:'mainland',name:'Mainland',number:'03',areas:['Ikeja','Maryland','Yaba','Ikorodu'],caption:'Everyday Lagos, within reach.',description:'Explore Ikeja, Maryland, Yaba, and Ikorodu for business visits, short stays, and monthly living. Ask our team about journey times for your particular itinerary.',image:'studio',tags:'BUSINESS · AIRPORT · MONTHLY'},
+  {id:'lekki-corridor',name:'Lekki Corridor',number:'02',areas:['Lekki Phase 1','Ikate','Chevron','Ajah','Lekki','Ikota','Sangotedo','Ibeju Lekki','Epe'],caption:'More room to make yourself at home.',description:'Discover Lekki Phase 1, Ikate, Chevron, and Ajah. Compare family spaces, relaxed weekend homes, and longer-stay options.',image:'pool',tags:'LIFESTYLE · FAMILY · WEEKEND'},
+  {id:'mainland',name:'Mainland',number:'03',areas:['Ikeja','Maryland','Yaba','Ikorodu','Opebi','Oregun','Magodo','Ogba','Surulere','Amuwo Odofin','Festac','Agidingbi','Gbagada'],caption:'Everyday Lagos, within reach.',description:'Explore Ikeja, Maryland, Yaba, and Ikorodu for business visits, short stays, and monthly living. Ask our team about journey times for your particular itinerary.',image:'studio',tags:'BUSINESS · AIRPORT · MONTHLY'},
 ];
 const base={type:'Apartment',baths:2,guests:4,minimumNights:2,publishedAt:'2026-10-10',availability:'Confirm first',demo:true,rules:['No parties or events','No smoking indoors','Check-in and cancellation terms will be confirmed with your quote'],amenities:['Reliable power','Wi-Fi','Kitchen','Security','Parking']};
 export const demoStays:Stay[]=[
@@ -21,11 +22,12 @@ export const demoStays:Stay[]=[
 // Unknown capacity is a request to confirm, never a promised occupancy limit.
 export function guestRequestLimit(s:Stay){return s.guests>0?s.guests:s.enquiryOnly?30:0;}
 export function acceptsGuestCount(s:Stay,count:number){return Number.isInteger(count)&&count>=1&&count<=guestRequestLimit(s);}
-export function bedroomLabel(s:Stay){return s.type==='Studio'&&s.beds===0?'Studio':s.beds+' '+(s.beds===1?'bedroom':'bedrooms');}
+export function purposeOf(s:Stay):Purpose{return s.purpose||'Shortlet';}
+export function bedroomLabel(s:Stay){return s.type==='Land'?'Land / plots':s.type==='Commercial'?'Commercial space':s.type==='Studio'&&s.beds===0?'Studio':s.beds>0?s.beds+' '+(s.beds===1?'bedroom':'bedrooms'):'Bedrooms to confirm';}
 export const money=(n:number)=>'₦'+new Intl.NumberFormat('en-NG').format(n);
 export const photo=(name:string)=>name.startsWith('https://')||name.startsWith('/')?name:'/images/'+name+'.jpg';
 export const whatsapp='2348085732615';
 export function whatsappUrl(s?:Stay,checkin='',checkout='',guests=2,message=''){
-  const body=['Hello LAG Shortlets, I would like to enquire about '+(s?s.title+' in '+s.area:'a stay in Lagos')+'.',checkin&&'Check-in: '+checkin,checkout&&'Check-out: '+checkout,'Guests: '+guests,message,'Please confirm availability and a full quote.'].filter(Boolean).join('\n');
+  const body=['Hello LAG Shortlets, I would like to enquire about '+(s?s.title+' in '+s.area:'a stay in Lagos')+'.',s&&purposeOf(s)!=='Shortlet'?'Interest: '+purposeOf(s):checkin&&'Check-in: '+checkin,(!s||purposeOf(s)==='Shortlet')&&checkout&&'Check-out: '+checkout,(!s||purposeOf(s)==='Shortlet')&&'Guests: '+guests,message,'Please confirm availability and a full quote.'].filter(Boolean).join('\n');
   return 'https://wa.me/'+whatsapp+'?text='+encodeURIComponent(body);
 }

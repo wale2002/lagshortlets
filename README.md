@@ -1,14 +1,18 @@
 # LAG Shortlets
 
-A Lagos shortlet catalogue and private operations workspace. Built with Next.js, React, Framer Motion, MongoDB Atlas and Cloudinary for Vercel.
+A Lagos catalogue for shortlets, property sales and annual rentals, with a private operations workspace. Built with Next.js, React, Framer Motion, MongoDB Atlas and Cloudinary for Vercel.
 
 ## Guest experience
 
 Guests can browse Lagos zones and collections, search by location, dates and capacity, filter amenities and rates, save favourites, view galleries and submit enquiries. Each accepted enquiry receives a durable reference. WhatsApp links include the guest's stay details. Availability and full pricing are confirmed by the LAG team; this application does not take payments or confirm bookings. Permissioned properties can use enquiry-only mode with unknown capacity, bathrooms or minimum nights. Guests see confirmation labels and submit a requested group size; an unknown limit never promises that the property can host that group. Known guest limits and minimum nights remain enforced.
 
+The catalogue has separate `/stays`, `/sales` and `/rentals` routes. Sales and annual rentals accept viewing enquiries without stay dates or guest counts. Land and commercial space have appropriate detail labels. Neighbourhoods are restricted to the Lagos list in `app/data.ts`.
+
+Discovered Instagram properties use enquiry-only referral records: rewritten property facts appear publicly while realtor handles, business contacts, original post links and advertised source prices stay private. New sources are recorded as discovered referrals, not endorsed partners. An unapproved referral cannot publish copied media. Listings without clean, approved photos use a property-details panel; images and videos with watermarks are excluded.
+
 ## LAG Vault
 
-`/vault` requires an allowlisted staff email, a staff password and a six-digit authenticator code. Staff sessions last 12 hours; Vault verification lasts 30 minutes. Authenticator codes cannot be replayed. Administrators manage supplier details and partners. Operations staff cannot read supplier costs, contacts, permission evidence or partner records. MongoDB transactions pair operational changes with audit entries.
+`/vault` requires an allowlisted staff email, a staff password and a six-digit authenticator code. Staff sessions last 12 hours; Vault verification lasts 30 minutes. Authenticator codes cannot be replayed. Administrators manage confidential realtor records and supplier details. Each property and its customer enquiries show the linked realtor and original post privately, with manual contact links. Properties can be searched by title, area, reference and realtor, and filtered by category. Operations staff cannot read supplier costs, contacts, permission evidence or partner records. MongoDB transactions pair operational changes with audit entries.
 
 For this initial release, each role uses a separately configured password hash. Share a role password only with authorised staff; individual password accounts and automated account recovery are not implemented. A lost authenticator requires an administrator to remove that user's `staff_mfa` record after verifying their identity.
 
@@ -34,7 +38,7 @@ npm test
 npm run verify:services
 ```
 
-Integration tests load `.env.local`, create a uniquely named `lag_verify_...` database and test enquiry persistence, staff authentication, MFA replay prevention, private-field isolation, publishing approval and image validation. They remove only that test database. Cloudinary verification uploads a uniquely named tiny test image and deletes only that image. No customer messages are sent.
+Integration tests load `.env.local`, create a uniquely named `lag_verify_...` database and test enquiry persistence, staff authentication, MFA replay prevention, private-field isolation, publishing approval, Lagos-only category validation, referral-source isolation, viewing enquiries and image validation. They remove only that test database. Cloudinary verification uploads a uniquely named tiny test image and deletes only that image. No customer messages are sent.
 
 ## Vercel deployment
 
