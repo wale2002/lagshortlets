@@ -9,3 +9,5 @@
 .icon-button.mobile-menu{display:none}@media(max-width:850px){.icon-button.mobile-menu{display:grid}}
 
 @media(max-width:600px){.hero-copy h1{font-size:78px}.hero-copy h1 br:nth-child(2){display:initial}.hero-copy h1 em{margin-left:0}}
+
+.staff-login input{font-size:16px;letter-spacing:normal;text-align:left}
