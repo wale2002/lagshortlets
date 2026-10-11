@@ -34,7 +34,7 @@ npm test
 npm run verify:services
 ```
 
-Integration tests load `.env.local`, create a uniquely named `lagshortlets_verification_...` database and test enquiry persistence, staff authentication, MFA replay prevention, private-field isolation, publishing approval and image validation. They remove only that test database. Cloudinary verification uploads a uniquely named tiny test image and deletes only that image. No customer messages are sent.
+Integration tests load `.env.local`, create a uniquely named `lag_verify_...` database and test enquiry persistence, staff authentication, MFA replay prevention, private-field isolation, publishing approval and image validation. They remove only that test database. Cloudinary verification uploads a uniquely named tiny test image and deletes only that image. No customer messages are sent.
 
 ## Vercel deployment
 
