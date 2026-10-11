@@ -11,3 +11,5 @@
 @media(max-width:600px){.hero-copy h1{font-size:78px}.hero-copy h1 br:nth-child(2){display:initial}.hero-copy h1 em{margin-left:0}}
 
 .staff-login input{font-size:16px;letter-spacing:normal;text-align:left}
+
+.property-gallery[data-count="1"],.property-gallery[data-count="2"]{grid-template-rows:420px}.property-gallery[data-count="1"]{grid-template-columns:1fr}.property-gallery[data-count="2"]{grid-template-columns:1fr 1fr}.property-gallery[data-count="1"] button:first-child,.property-gallery[data-count="2"] button:first-child{grid-row:1;grid-column:1}.capacity{flex-wrap:wrap;row-gap:5px}.capacity i{flex:none}@media(max-width:600px){.property-gallery[data-count="1"]{grid-template-rows:300px}.property-gallery[data-count="2"]{grid-template-rows:230px}}

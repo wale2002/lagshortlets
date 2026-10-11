@@ -2,12 +2,12 @@ export type Stay = {
   id:string; slug:string; title:string; zone:string; area:string; type:string;
   beds:number; baths:number; guests:number; nightly:number|null; monthly:number|null;
   images:string[]; amenities:string[]; collections:string[]; description:string;
-  rules:string[]; minimumNights:number; publishedAt:string; availability:string; demo:boolean;
+  rules:string[]; minimumNights:number; publishedAt:string; availability:string; demo:boolean; enquiryOnly?:boolean;
 };
 export const zones = [
   {id:'island-core',name:'Island Core',number:'01',areas:['Victoria Island','Ikoyi','Oniru'],caption:'City energy. A waterfront outlook.',description:'For a stay centred around Victoria Island, Ikoyi, or Oniru. Explore spaces for work trips, city weekends, and time by the water.',image:'atlantic',tags:'EXECUTIVE · WATERFRONT · CENTRAL'},
-  {id:'lekki-corridor',name:'Lekki Corridor',number:'02',areas:['Lekki Phase 1','Ikate','Chevron','Ajah'],caption:'More room to make yourself at home.',description:'Discover Lekki Phase 1, Ikate, Chevron, and Ajah. Compare family spaces, relaxed weekend homes, and longer-stay options.',image:'pool',tags:'LIFESTYLE · FAMILY · WEEKEND'},
-  {id:'mainland',name:'Mainland',number:'03',areas:['Ikeja','Maryland','Yaba'],caption:'Everyday Lagos, within reach.',description:'Explore Ikeja, Maryland, and Yaba for business visits and monthly living. Ask our team about journey times for your particular itinerary.',image:'studio',tags:'BUSINESS · AIRPORT · MONTHLY'},
+  {id:'lekki-corridor',name:'Lekki Corridor',number:'02',areas:['Lekki Phase 1','Ikate','Chevron','Ajah','Lekki'],caption:'More room to make yourself at home.',description:'Discover Lekki Phase 1, Ikate, Chevron, and Ajah. Compare family spaces, relaxed weekend homes, and longer-stay options.',image:'pool',tags:'LIFESTYLE · FAMILY · WEEKEND'},
+  {id:'mainland',name:'Mainland',number:'03',areas:['Ikeja','Maryland','Yaba','Ikorodu'],caption:'Everyday Lagos, within reach.',description:'Explore Ikeja, Maryland, Yaba, and Ikorodu for business visits, short stays, and monthly living. Ask our team about journey times for your particular itinerary.',image:'studio',tags:'BUSINESS · AIRPORT · MONTHLY'},
 ];
 const base={type:'Apartment',baths:2,guests:4,minimumNights:2,publishedAt:'2026-10-10',availability:'Confirm first',demo:true,rules:['No parties or events','No smoking indoors','Check-in and cancellation terms will be confirmed with your quote'],amenities:['Reliable power','Wi-Fi','Kitchen','Security','Parking']};
 export const demoStays:Stay[]=[
@@ -18,6 +18,10 @@ export const demoStays:Stay[]=[
   {...base,id:'demo-sunday',slug:'sunday-at-ikate',title:'Sunday at Ikate',zone:'lekki-corridor',area:'Ikate',beds:2,nightly:95000,monthly:2100000,images:['pool','palm','kitchen'],collections:['Pool Stays','Family'],amenities:[...base.amenities,'Pool','Balcony'],description:'A weekend-minded stay concept with an outdoor pool and room to unwind. An illustrative listing only; actual inventory will be reviewed before public release.'},
   {...base,id:'demo-maryland',slug:'maryland-mews',title:'Maryland Mews',zone:'mainland',area:'Maryland',beds:2,nightly:null,monthly:null,images:['kitchen','studio','hero'],collections:['Family','Executive'],amenities:[...base.amenities,'Family suitable','Workspace'],description:'A practical, welcoming monthly-stay concept for life between places. Request a quote to discuss duration and requirements. This listing is sample content and has no confirmed availability.'},
 ];
+// Unknown capacity is a request to confirm, never a promised occupancy limit.
+export function guestRequestLimit(s:Stay){return s.guests>0?s.guests:s.enquiryOnly?30:0;}
+export function acceptsGuestCount(s:Stay,count:number){return Number.isInteger(count)&&count>=1&&count<=guestRequestLimit(s);}
+export function bedroomLabel(s:Stay){return s.type==='Studio'&&s.beds===0?'Studio':s.beds+' '+(s.beds===1?'bedroom':'bedrooms');}
 export const money=(n:number)=>'₦'+new Intl.NumberFormat('en-NG').format(n);
 export const photo=(name:string)=>name.startsWith('https://')||name.startsWith('/')?name:'/images/'+name+'.jpg';
 export const whatsapp='2348085732615';

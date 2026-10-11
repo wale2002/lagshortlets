@@ -4,7 +4,7 @@ A Lagos shortlet catalogue and private operations workspace. Built with Next.js,
 
 ## Guest experience
 
-Guests can browse Lagos zones and collections, search by location, dates and capacity, filter amenities and rates, save favourites, view galleries and submit enquiries. Each accepted enquiry receives a durable reference. WhatsApp links include the guest's stay details. Availability and full pricing are confirmed by the LAG team; this application does not take payments or confirm bookings.
+Guests can browse Lagos zones and collections, search by location, dates and capacity, filter amenities and rates, save favourites, view galleries and submit enquiries. Each accepted enquiry receives a durable reference. WhatsApp links include the guest's stay details. Availability and full pricing are confirmed by the LAG team; this application does not take payments or confirm bookings. Permissioned properties can use enquiry-only mode with unknown capacity, bathrooms or minimum nights. Guests see confirmation labels and submit a requested group size; an unknown limit never promises that the property can host that group. Known guest limits and minimum nights remain enforced.
 
 ## LAG Vault
 
@@ -42,6 +42,6 @@ Import `wale2002/lagshortlets` into Vercel using the Next.js preset and Node.js 
 
 ## Before accepting customers
 
-The six starter listings, prices, specifications and photographs are labelled illustrative. Replace them with accurate, permissioned inventory and approved photos in Vault. Publishing partner inventory requires approved permission evidence and an availability owner. Add your booking, fee, deposit and cancellation terms and approve privacy, data retention, backup and recovery policies.
+Six illustrative starter listings appear only when no Live inventory exists. Real inventory is managed in Vault; partner source rates and contacts stay private when the public listing requests a LAG quote. Publishing partner inventory requires approved permission evidence and an availability owner. Add your booking, fee, deposit and cancellation terms and approve privacy, data retention, backup and recovery policies.
 
 Enquiries are stored in Vault, but automatic email or WhatsApp notifications are not configured. Establish a response process and notification provider before launch. The website includes `noindex` metadata while the initial inventory is prepared. Real inventory approval, customer-facing policy approval, monitoring, analytics and database backup operations remain business launch tasks.
