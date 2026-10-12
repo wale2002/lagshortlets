@@ -11,7 +11,8 @@
     "build": "next build --webpack",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "node --test tests/integration.test.mjs",
+    "test": "node --test tests/referral-media.test.mjs tests/integration.test.mjs",
+    "test:media": "node --test tests/referral-media.test.mjs",
     "password:hash": "node scripts/hash-password.mjs",
     "verify:services": "node scripts/verify-services.mjs"
   },

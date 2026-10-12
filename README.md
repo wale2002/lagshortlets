@@ -8,7 +8,7 @@ Guests can browse Lagos zones and collections, search by location, dates and cap
 
 The catalogue has separate `/stays`, `/sales` and `/rentals` routes. Sales and annual rentals accept viewing enquiries without stay dates or guest counts. Land and commercial space have appropriate detail labels. Neighbourhoods are restricted to the Lagos list in `app/data.ts`.
 
-Discovered Instagram properties use enquiry-only referral records: rewritten property facts appear publicly while realtor handles, business contacts, original post links and advertised source prices stay private. New sources are recorded as discovered referrals, not endorsed partners. An unapproved referral cannot publish copied media. Listings without clean, approved photos use a property-details panel; images and videos with watermarks are excluded.
+Discovered Instagram properties use enquiry-only referral records: rewritten property facts appear publicly while realtor handles, business contacts, original post links and advertised source prices stay private. New sources are recorded as discovered referrals, not endorsed partners. Referral photos require either recorded supplier media approval or an administrator review with separate owner display approval. Owner display approval does not change supplier permission or imply an endorsed partnership. The review must cover the exact image URLs being published; new uploads need a fresh review. Public photos must match the property and reveal no realtor names, handles, phone numbers, websites or QR codes. Original assets and editing history remain private. Listings without suitable reviewed photos use a property-details panel.
 
 ## LAG Vault
 
@@ -39,6 +39,8 @@ npm run verify:services
 ```
 
 Integration tests load `.env.local`, create a uniquely named `lag_verify_...` database and test enquiry persistence, staff authentication, MFA replay prevention, private-field isolation, publishing approval, Lagos-only category validation, referral-source isolation, viewing enquiries and image validation. They remove only that test database. Cloudinary verification uploads a uniquely named tiny test image and deletes only that image. No customer messages are sent.
+
+`npm run test:media` checks the real publication route with isolated storage and authentication adapters, without starting a Next development server. It verifies exact-image review, operations restrictions, supplier permission handling, private-field isolation and Lagos-only validation.
 
 ## Vercel deployment
 

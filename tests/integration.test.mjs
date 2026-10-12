@@ -61,5 +61,15 @@ test('MongoDB-backed guest and Vault workflows',{skip:!enabled,timeout:600000},a
   }
   for(const route of ['/sales','/rentals']){const page=await (await fetch(origin+route)).text();assert.ok(page.includes('Annual rentals'));assert.ok(page.includes('For sale'));}
  });
+ await t.test('Owner-reviewed referral media stays separate from supplier consent and covers exact images',async()=>{
+  const body={action:'property',public:{...listing,title:'Reviewed Lagos referral',purpose:'Sale',nightly:null,enquiryOnly:true,demo:false},private:{source:'Referral',sourceHandle:'review_private_realtor',originalPostUrl:'https://www.instagram.com/p/REVIEW_PRIVATE_2026/',mediaStatus:'Reviewed original',mediaDisplayApproved:true,mediaDisplayEvidence:'Owner display instruction and visual review',mediaApprovedImages:['atlantic']},permission:'Pending',owner:'admin@example.invalid',status:'Live'};
+  const accepted=await request('/api/vault',body,admin);assert.equal(accepted.status,200);body.id=(await accepted.json()).id;
+  const row=await db.collection('properties').findOne({id:body.id});assert.equal(row.permission,'Pending','Owner display approval does not fabricate supplier permission');
+  const page=await(await fetch(origin+'/property/'+row.slug)).text();assert.ok(!page.includes('review_private_realtor'));assert.ok(!page.includes('mediaDisplayEvidence'));
+  body.public.images=['atlantic','palm'];assert.equal((await request('/api/vault',body,admin)).status,400,'New images require a new review');assert.equal((await request('/api/vault',body,ops)).status,400,'Operations cannot approve new referral images');
+  body.public.images=['atlantic'];body.private.mediaDisplayEvidence='';assert.equal((await request('/api/vault',body,admin)).status,400,'Review evidence required');
+  body.private.mediaDisplayEvidence='Owner display instruction and visual review';body.private.mediaStatus='Awaiting clean media';assert.equal((await request('/api/vault',body,admin)).status,400,'Unreviewed media blocked');
+  body.private.mediaStatus='Reviewed edited';assert.equal((await request('/api/vault',body,admin)).status,200);body.permission='Withdrawn';assert.equal((await request('/api/vault',body,admin)).status,400,'Withdrawal still blocks publication');
+ });
  await t.test('Cloudinary upload requires verification and valid image bytes',async()=>{const form=()=>{const f=new FormData();f.set('file',new Blob(['invalid image'],{type:'image/png'}),'test.png');return f;};assert.equal((await fetch(origin+'/api/vault/media',{method:'POST',headers:{origin},body:form()})).status,403);assert.equal((await fetch(origin+'/api/vault/media',{method:'POST',headers:{origin,cookie:admin},body:form()})).status,400);});
 });
